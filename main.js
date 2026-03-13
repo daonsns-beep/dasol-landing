@@ -335,7 +335,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 11. Promotional Trust Modal Logic
     const promoModal = document.getElementById('promo-modal');
-    const promoOverlay = document.getElementById('promo-overlay');
     const btnPromoCloseBtn = document.getElementById('promo-close-btn');
     const btnPromo24h = document.getElementById('promo-close-24h');
     const btnPromoNow = document.getElementById('promo-close-now');
@@ -349,16 +348,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
         
-        if (promoModal && promoOverlay) {
-            promoOverlay.classList.add('show');
+        if (promoModal) {
             promoModal.classList.add('show');
         }
     }
 
     function closePromo() {
-        if (promoModal && promoOverlay) {
+        if (promoModal) {
             promoModal.classList.remove('show');
-            promoOverlay.classList.remove('show');
         }
     }
 
@@ -369,7 +366,6 @@ document.addEventListener('DOMContentLoaded', () => {
         // Close actions
         if (btnPromoCloseBtn) btnPromoCloseBtn.addEventListener('click', closePromo);
         if (btnPromoNow) btnPromoNow.addEventListener('click', closePromo);
-        if (promoOverlay) promoOverlay.addEventListener('click', closePromo);
 
         if (btnPromo24h) {
             btnPromo24h.addEventListener('click', () => {
