@@ -60,7 +60,8 @@ document.addEventListener('DOMContentLoaded', () => {
             startAt: 0,
             perView: 3,
             gap: 24,
-            autoplay: 4000,
+            autoplay: 2500,
+            animationDuration: 800,
             hoverpause: true,
             breakpoints: {
                 1024: {
