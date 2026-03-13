@@ -296,6 +296,83 @@ h1, h2, h3, h4, h5, h6 { font-weight: 700; line-height: 1.35; letter-spacing: -0
 .footer-bottom { display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; font-size: 0.8rem; color: var(--text-light); }
 @media (min-width: 768px) { .footer-bottom { flex-direction: row; justify-content: space-between; text-align: left; } }
 
+/* Sticky Bottom Bar (Desktop) */
+.sticky-bottom-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid var(--border-color);
+    box-shadow: 0 -10px 30px rgba(0,0,0,0.06);
+    z-index: 999;
+    padding: 14px 0;
+    transform: translateY(120%);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.sticky-bottom-bar.visible {
+    transform: translateY(0);
+}
+.sticky-bar-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+.sticky-title {
+    font-size: 1.05rem;
+    color: var(--text-main);
+    white-space: nowrap;
+}
+.sticky-title strong {
+    color: var(--seconday-color);
+}
+.sticky-form-inline {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    justify-content: flex-end;
+}
+.sticky-form-inline input, .sticky-form-inline select {
+    padding: 12px 14px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 0.9rem;
+    background: #f9fafb;
+    outline: none;
+    min-width: 130px;
+    font-family: inherit;
+    transition: var(--transition);
+}
+.sticky-form-inline input:focus, .sticky-form-inline select:focus {
+    border-color: var(--seconday-color);
+    background: white;
+}
+.s-privacy-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    white-space: nowrap;
+    user-select: none;
+}
+.s-privacy-label input {
+    margin: 0;
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+    accent-color: var(--seconday-color);
+}
+.s-submit-btn {
+    white-space: nowrap;
+    padding: 12px 24px;
+    font-size: 1rem;
+}
+
 /* Mobile Fixed CTA */
 .mobile-cta-fixed { position: fixed; bottom: 0; left: 0; width: 100%; display: flex; z-index: 1000; box-shadow: 0 -4px 15px rgba(0,0,0,0.08); }
 .btn-half { flex: 1; padding: 16px 0; text-align: center; font-weight: 600; font-size: 1rem; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }

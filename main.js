@@ -242,4 +242,41 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 1200);
         });
     }
+
+    // 8. Sticky Bottom Bar visibility & submission
+    const stickyBar = document.getElementById('sticky-bottom-bar');
+    if (stickyBar) {
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 450) {
+                stickyBar.classList.add('visible');
+            } else {
+                stickyBar.classList.remove('visible');
+            }
+        });
+
+        const stickyForm = document.getElementById('sticky-loan-form');
+        if (stickyForm) {
+            stickyForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const privacyCheck = document.getElementById('s-privacy').checked;
+                if (!privacyCheck) {
+                    alert('개인정보 수집 및 이용에 동의해주세요.');
+                    return;
+                }
+                
+                const btn = stickyForm.querySelector('.s-submit-btn');
+                const originalHtml = btn.innerHTML;
+                
+                btn.disabled = true;
+                btn.innerHTML = '<i class="ph ph-spinner ph-spin"></i> 접수 중...';
+                
+                setTimeout(() => {
+                    alert('신청이 완료되었습니다. 전문 상담원이 곧 연락드리겠습니다.');
+                    btn.innerHTML = originalHtml;
+                    btn.disabled = false;
+                    stickyForm.reset();
+                }, 1200);
+            });
+        }
+    }
 });
