@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>부동산 담보대출 | 다솔대부중개 전문가 매칭</title>
+    <meta name="description" content="인공지능 시세 분석 기반 부동산 담보대출. 구입자금, 운영자금, 대환대출에 최적화된 높은 한도와 금리를 투명하게 제안합니다.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="style.css">
+    <!-- Glide.js for Carousel -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@glidejs/glide/dist/css/glide.core.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@glidejs/glide/dist/css/glide.theme.min.css">
+    <!-- Daum Postcode API -->
+    <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="container header-container">
+            <div class="logo">
+                <i class="ph-fill ph-buildings"></i>
+                <div>
+                    <strong>다솔대부중개</strong>
+                    <span>부동산금융 솔루션</span>
+                </div>
+            </div>
+            <div class="nav-links d-none-mobile">
+                <a href="#products" class="smooth-scroll">맞춤 대출찾기</a>
+                <a href="#process" class="smooth-scroll">진행 절차</a>
+                <a href="#testimonials" class="smooth-scroll">고객 후기</a>
+            </div>
+            <div class="header-actions">
+                <a href="#consult-form" class="btn btn-outline smooth-scroll d-none-mobile">무료 한도/금리 알아보기</a>
+                <a href="tel:1866-1019" class="btn btn-primary">
+                    <i class="ph ph-phone-call"></i>
+                    <span>상담 연결</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Professional Hero Section -->
+        <section class="hero-pro" id="hero">
+            <div class="container hero-container">
+                <div class="hero-content fade-up">
+                    <div class="trust-badge-sm">
+                        <i class="ph-fill ph-shield-check"></i> 정식 등록 대부중개업체
+                    </div>
+                    <h1 class="hero-title">
+                        복잡한 부동산 담보대출,<br>
+                        <span class="highlight">최적의 조건</span>으로 확실하게.
+                    </h1>
+                    <p class="hero-subtitle">
+                        구입자금부터 대환, 사업자 운영자금까지.<br>
+                        전문 상담사가 귀하의 부동산 담보가치를 정확하게 평가합니다.<br>
+                        <span class="warning-text"><i class="ph ph-info"></i> 전월세 보증금 담보대출은 취급하지 않습니다.</span>
+                    </p>
+                    
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <strong>연 4.0%~</strong>
+                            <span>최저 금리</span>
+                        </div>
+                        <div class="stat-divider"></div>
+                        <div class="stat-item">
+                            <strong>최대 90%</strong>
+                            <span>LTV 가늠 (자체기준)</span>
+                        </div>
+                        <div class="stat-divider"></div>
+                        <div class="stat-item">
+                            <strong>당일/무료</strong>
+                            <span>가상담 진행</span>
+                        </div>
+                    </div>
+
+                    <div class="hero-cta-group">
+                        <p class="cta-hint"><i class="ph-fill ph-magic-wand"></i> 신용점수에 영향 없이, <strong>실시간 한도를 확인해보세요.</strong></p>
+                        <div class="hero-cta">
+                            <a href="#consult-form" class="btn btn-primary btn-lg smooth-scroll">
+                                <i class="ph ph-calculator"></i> 내 예상 한도 알아보기
+                            </a>
+                            <a href="tel:1866-1019" class="btn btn-outline btn-lg">
+                                <i class="ph ph-headset"></i> 전화 1866-1019
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Graphic / Calculator Preview -->
+                <div class="hero-visual fade-up delay-1">
+                    <div class="valuation-card">
+                        <div class="card-header">
+                            <div class="pulse-dot"></div>
+                            <span id="valuation-title">실시간 가치 평가 시뮬레이션</span>
+                        </div>
+                        <div class="card-body" id="valuation-body">
+                            <div class="mock-input-group">
+                                <div class="mock-label">부동산 소재지</div>
+                                <div class="mock-input" id="address-search-btn" style="cursor: pointer; transition: var(--transition);">
+                                    <i class="ph ph-map-pin"></i> <span id="address-text">주소 또는 아파트명 검색하기</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Analysis Section (Hidden initially or showing placeholder) -->
+                            <div class="mock-chart-container" style="position: relative;">
+                                <div class="mock-chart" id="valuation-chart">
+                                    <div class="chart-bar"><div class="fill" id="bar-gov" style="width: 0%;"></div><span>국토부 실거래가</span></div>
+                                    <div class="chart-bar"><div class="fill" id="bar-ai" style="width: 0%;"></div><span>AI 추정가</span></div>
+                                    <div class="chart-bar highlight"><div class="fill" id="bar-limit" style="width: 0%;"></div><span>예상 담보 한도</span></div>
+                                </div>
+                                
+                                <!-- Loading Overlay -->
+                                <div id="valuation-loading" style="display: none; position: absolute; inset: 0; background: rgba(255,255,255,0.8); backdrop-filter: blur(2px); z-index: 10; flex-direction: column; align-items: center; justify-content: center; border-radius: 8px;">
+                                    <i class="ph ph-spinner-gap ph-spin" style="font-size: 2rem; color: var(--seconday-color); margin-bottom: 8px;"></i>
+                                    <span style="font-size: 0.95rem; font-weight: 600; color: var(--primary-color);" id="loading-text">AI 시세 분석 중...</span>
+                                </div>
+                                
+                                <!-- Result Overlay (Lead Capture) -->
+                                <div id="valuation-result-overlay" style="display: none; position: absolute; inset: 0; background: rgba(255, 255, 255, 0.98); z-index: 20; flex-direction: column; align-items: center; justify-content: center; border-radius: 8px; text-align: center; padding: 20px 24px; box-shadow: 0 -10px 40px rgba(0,0,0,0.05);">
+                                    <h4 style="font-weight: 700; color: var(--primary-color); font-size: 1.2rem; margin-bottom: 6px;">분석이 완료되었습니다!</h4>
+                                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px;">정확한 한도와 금리 결과를 문자로 즉시 보내드립니다.</p>
+                                    
+                                    <div id="mini-form-container" style="width: 100%; text-align: left;">
+                                        <input type="text" id="mini-name" placeholder="이름" style="width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 0.9rem; background: #f9fafb;" required>
+                                        <input type="tel" id="mini-phone" placeholder="연락처 (예: 01012345678)" style="width: 100%; padding: 12px; margin-bottom: 12px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 0.9rem; background: #f9fafb;" required>
+                                        
+                                        <label class="checkbox-container" style="margin-bottom: 16px; font-size: 0.8rem;">
+                                            <input type="checkbox" id="mini-privacy" checked>
+                                            <span class="checkmark" style="height: 18px; width: 18px;"></span>
+                                            <span style="margin-left: 24px; color: var(--text-muted);">개인정보 수집 및 이용 동의</span>
+                                        </label>
+                                        
+                                        <button type="button" class="btn btn-primary" id="mini-submit-btn" style="width: 100%; padding: 12px; font-size: 1rem; border-radius: 8px;">
+                                            결과 톡/문자로 받기
+                                        </button>
+                                    </div>
+                                    
+                                    <!-- Mini Success State -->
+                                    <div id="mini-success-state" style="display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%;">
+                                        <i class="ph-fill ph-check-circle" style="font-size: 3.5rem; color: var(--accent-color); margin-bottom: 16px;"></i>
+                                        <h5 style="font-size: 1.1rem; color: var(--primary-color); margin-bottom: 8px;">신청이 완료되었습니다.</h5>
+                                        <p style="font-size: 0.9rem; color: var(--text-muted);">전문 상담사가 배정되어<br>곧 상세 결과를 안내해 드립니다.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mock-result" id="valuation-footer-text">
+                                상담 완료 후, <strong>나만의 대출 제안서</strong>를<br>받아보실 수 있습니다.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="hero-bg-shapes">
+                <div class="shape shape-1"></div>
+                <div class="shape shape-2"></div>
+            </div>
+        </section>
+
+        <!-- Solutions/Products Section -->
+        <section class="solutions section" id="products">
+            <div class="container">
+                <div class="section-header text-center fade-up">
+                    <h2 class="section-title">목적에 맞는 <span>솔루션을 선택하세요</span></h2>
+                    <p class="section-desc">개인부터 법인까지, 다양한 자금 목적에 맞춘 최적의 대출 구조를 설계해 드립니다.</p>
+                </div>
+
+                <div class="solution-grid fade-up delay-1">
+                    <!-- Card 1 -->
+                    <div class="solution-card">
+                        <div class="card-icon"><i class="ph-duotone ph-house-line"></i></div>
+                        <div class="card-content">
+                            <h3>구입 자금</h3>
+                            <p>부동산 매입 시 부족한 잔금을 위한 든든한 지원. 모든 주택, 집합건물 단독/다가구 가능합니다.</p>
+                            <ul class="bullet-list">
+                                <li><i class="ph-bold ph-check"></i> 매매잔금 부족분 해결</li>
+                                <li><i class="ph-bold ph-check"></i> 규제지역 상관없는 한도 산출</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Card 2 -->
+                    <div class="solution-card">
+                        <div class="card-icon"><i class="ph-duotone ph-briefcase"></i></div>
+                        <div class="card-content">
+                            <h3>운영 자금</h3>
+                            <p>보유 부동산을 담보로 한 개인사업자/법인 운영자금. 기존 고금리 대출 대환도 가능합니다.</p>
+                            <ul class="bullet-list">
+                                <li><i class="ph-bold ph-check"></i> 사업자 전용 우대 한도</li>
+                                <li><i class="ph-bold ph-check"></i> 세금 납부, 인건비 등 유동성 확보</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Card 3 -->
+                    <div class="solution-card">
+                        <div class="card-icon"><i class="ph-duotone ph-arrows-merge"></i></div>
+                        <div class="card-content">
+                            <h3>대환 및 추가 생활자금</h3>
+                            <p>분산된 고금리 채무를 통합하여 월 납입금을 줄이고 여유 자금을 확보하세요.</p>
+                            <ul class="bullet-list">
+                                <li><i class="ph-bold ph-check"></i> 카드론, 현금서비스 통합</li>
+                                <li><i class="ph-bold ph-check"></i> 이자 부담 경감(연 4.0%~ 적용 시)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Terms Summary Box -->
+                <div class="terms-summary-box fade-up delay-2">
+                    <div class="terms-row">
+                        <div class="terms-col">
+                            <span>대출 금리</span>
+                            <strong>연 4.0% ~ 연 19.9% 이내</strong>
+                            <small>(연체이자 연 20% 이내)</small>
+                        </div>
+                        <div class="terms-col">
+                            <span>상환 방식</span>
+                            <strong>원리금균등, 만기일시상환 등</strong>
+                            <small>(고객 맞춤형 최장 5년 선택)</small>
+                        </div>
+                        <div class="terms-col">
+                            <span>대상 물건</span>
+                            <strong>아파트, 빌라, 상가, 토지 등</strong>
+                            <small>(전월세 보증금 담보 제외)</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials (Customer Success Stories) -->
+        <section class="testimonials section bg-light" id="testimonials">
+            <div class="container">
+                <div class="section-header text-center fade-up">
+                    <h2 class="section-title">실제 고객님들의 <span>대출 성사 사례</span></h2>
+                    <p class="section-desc">다솔대부중개를 통해 위기를 기회로 바꾼 고객님들의 생생한 후기입니다.</p>
+                </div>
+
+                <div class="glide testimonials-slider fade-up delay-1">
+                    <div class="glide__track" data-glide-el="track">
+                        <ul class="glide__slides">
+                            <li class="glide__slide">
+                                <div class="review-card">
+                                    <div class="review-header">
+                                        <div class="reviewer-info">
+                                            <strong>개인사업자 (50대)</strong>
+                                            <span>운영자금 1.8억 승인</span>
+                                        </div>
+                                        <div class="review-rating"><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i></div>
+                                    </div>
+                                    <p class="review-text">"여러 은행에서 지방 과수원이라고 거절당했는데, 이곳 상담사분이 정확한 감정가를 통해 대출을 연계해주셔서 급한 자금을 해결할 수 있었습니다."</p>
+                                    <div class="review-tags">
+                                        <span class="tag">#사업자운영자금</span>
+                                        <span class="tag">#토지담보</span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="glide__slide">
+                                <div class="review-card">
+                                    <div class="review-header">
+                                        <div class="reviewer-info">
+                                            <strong>직장인 (40대)</strong>
+                                            <span>대환대출 8,000만 승인</span>
+                                        </div>
+                                        <div class="review-rating"><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i></div>
+                                    </div>
+                                    <p class="review-text">"카드론과 저축은행 대출로 월 이자가 너무 부담스러웠는데, 보유한 아파트를 담보로 하나로 묶어 이자를 절반 가까이 낮췄습니다. 정말 감사합니다."</p>
+                                    <div class="review-tags">
+                                        <span class="tag">#가계대환</span>
+                                        <span class="tag">#아파트담보</span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="glide__slide">
+                                <div class="review-card">
+                                    <div class="review-header">
+                                        <div class="reviewer-info">
+                                            <strong>법인대표 (50대)</strong>
+                                            <span>추가자금 3억 승인</span>
+                                        </div>
+                                        <div class="review-rating"><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i></div>
+                                    </div>
+                                    <p class="review-text">"대출금리가 올라서 어려웠는데, 기존 대출의 금리를 1.4% 낮추고 추가 한도까지 늘릴 수 있었습니다. 전문적인 금융 컨설팅을 받는 느낌이었습니다."</p>
+                                    <div class="review-tags">
+                                        <span class="tag">#법인대환</span>
+                                        <span class="tag">#상가담보</span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="glide__slide">
+                                <div class="review-card">
+                                    <div class="review-header">
+                                        <div class="reviewer-info">
+                                            <strong>임대사업자 (40대)</strong>
+                                            <span>생활자금 5,000만 승인</span>
+                                        </div>
+                                        <div class="review-rating"><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i></div>
+                                    </div>
+                                    <p class="review-text">"임대주고 있던 오피스텔에 보증금이 있었는데도 불구하고, 후순위 구조로 필요한 대출 한도가 나와서 매우 만족스럽습니다."</p>
+                                    <div class="review-tags">
+                                        <span class="tag">#후순위담보</span>
+                                        <span class="tag">#오피스텔</span>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="glide__arrows" data-glide-el="controls">
+                        <button class="glide__arrow glide__arrow--left" data-glide-dir="<"><i class="ph ph-caret-left"></i></button>
+                        <button class="glide__arrow glide__arrow--right" data-glide-dir=">"><i class="ph ph-caret-right"></i></button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Process infographic Section -->
+        <section class="process-pro section" id="process">
+            <div class="container">
+                <div class="process-wrapper fade-up">
+                    <div class="process-info">
+                        <h2>복잡한 절차 없이,<br><span>스마트하게 진행하세요.</span></h2>
+                        <p>다솔대부중개는 신용점수 하락 없는 안전한 가상담부터 실행까지, 전 과정을 투명하게 매니징합니다.</p>
+                        <div class="benefit-list mt-4">
+                            <div class="benefit-row">
+                                <i class="ph-fill ph-check-circle text-primary"></i>
+                                <div>
+                                    <strong>서류 제출 최소화</strong>
+                                    <span>비대면 스크래핑 및 간소화된 서류 안내</span>
+                                </div>
+                            </div>
+                            <div class="benefit-row">
+                                <i class="ph-fill ph-check-circle text-primary"></i>
+                                <div>
+                                    <strong>빠른 피드백</strong>
+                                    <span>상담 접수 후 영업시간 내 즉각적인 가조회 결과 안내</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="process-timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-icon"><i class="ph-duotone ph-mouse-left"></i></div>
+                            <div class="timeline-content">
+                                <h4>01. 무료 한도상담 신청</h4>
+                                <p>온라인 폼이나 전화(1866-1019)로 간단한 정보를 접수합니다.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-icon"><i class="ph-duotone ph-calculator"></i></div>
+                            <div class="timeline-content">
+                                <h4>02. 가치평가 및 솔루션 제안</h4>
+                                <p>전문 상담사가 LTV 및 예상 한도, 금리 조건이 담긴 최적의 제안을 드립니다.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-icon"><i class="ph-duotone ph-file-text"></i></div>
+                            <div class="timeline-content">
+                                <h4>03. 서류 접수 및 본심사</h4>
+                                <p>안내에 따라 필수 서류를 접수하면, 금융기관의 정밀 심사가 진행됩니다.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-icon"><i class="ph-duotone ph-bank"></i></div>
+                            <div class="timeline-content">
+                                <h4>04. 전자서명 및 대출 실행</h4>
+                                <p>안전한 계약 작성 후 고객님의 계좌로 대출금이 송금됩니다.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Application Form Section -->
+        <section class="application-pro section bg-light" id="consult-form">
+            <div class="container">
+                <div class="form-card fade-up">
+                    <div class="form-card-header text-center">
+                        <div class="badge-accent">무료 가상담</div>
+                        <h2>내 부동산, <span>얼마까지 나올까?</span></h2>
+                        <p>신용점수 영향 없이 안전하게 확인하세요.<br>전문 상담사가 1:1 맞춤형 대출 제안서를 안내해 드립니다.</p>
+                    </div>
+
+                    <div class="form-card-body">
+                        <form id="loan-application-form" class="loan-form modern-form">
+                            <div class="form-row">
+                                <div class="form-group half">
+                                    <label for="name">이름 <span class="required">*</span></label>
+                                    <div class="input-with-icon">
+                                        <i class="ph ph-user"></i>
+                                        <input type="text" id="name" name="name" class="form-control" placeholder="이름 입력" required>
+                                    </div>
+                                </div>
+                                <div class="form-group half">
+                                    <label for="phone">연락처 <span class="required">*</span></label>
+                                    <div class="input-with-icon">
+                                        <i class="ph ph-device-mobile"></i>
+                                        <input type="tel" id="phone" name="phone" class="form-control" placeholder="010-0000-0000" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group half">
+                                    <label for="property_type">담보 부동산 종류 <span class="required">*</span></label>
+                                    <div class="input-with-icon">
+                                        <i class="ph ph-buildings"></i>
+                                        <select id="property_type" name="property_type" class="form-control" required>
+                                            <option value="" disabled selected>선택해주세요</option>
+                                            <option value="아파트">아파트</option>
+                                            <option value="빌라/다세대">빌라 / 다세대</option>
+                                            <option value="주택/다가구">주택 / 다가구</option>
+                                            <option value="상가/오피스텔">상가 / 오피스텔</option>
+                                            <option value="토지">토지</option>
+                                            <option value="기타">기타 부동산</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group half">
+                                    <label for="loan_amount">희망 대출금액 <span class="required">*</span></label>
+                                    <div class="input-with-icon">
+                                        <i class="ph ph-currency-krw"></i>
+                                        <input type="text" id="loan_amount" name="loan_amount" class="form-control" placeholder="예: 5000만원" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>자금 용도 (선택)</label>
+                                <div class="radio-chips">
+                                    <label class="chip">
+                                        <input type="radio" name="purpose" value="구입자금">
+                                        <span>구입자금</span>
+                                    </label>
+                                    <label class="chip">
+                                        <input type="radio" name="purpose" value="운영자금">
+                                        <span>사업자 운영</span>
+                                    </label>
+                                    <label class="chip">
+                                        <input type="radio" name="purpose" value="대환/통합">
+                                        <span>대환(부채통합)</span>
+                                    </label>
+                                    <label class="chip">
+                                        <input type="radio" name="purpose" value="기타생활">
+                                        <span>기타 생활자금</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-terms">
+                                <label class="checkbox-container">
+                                    <input type="checkbox" id="privacy_agree" required>
+                                    <span class="checkmark"></span>
+                                    <span class="term-text">[필수] 개인정보 수집 및 이용 동의 <a href="#" class="view-terms" onclick="event.preventDefault(); alert('개인정보처리방침 팝업 오픈');">내용보기</a></span>
+                                </label>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-submit btn-xl">
+                                <span>예상 한도/금리 확인하기</span> <i class="ph-bold ph-arrow-right"></i>
+                            </button>
+                        </form>
+                        
+                        <div id="form-success-msg" class="success-message" style="display: none;">
+                            <div class="success-animation">
+                                <i class="ph-fill ph-check-circle"></i>
+                            </div>
+                            <h4>신청이 완료되었습니다.</h4>
+                            <p>영업일 기준 1시간 이내에 전문 상담원이 최적의 제안을 가지고 연락 드리겠습니다.</p>
+                            <button class="btn btn-outline mt-3" onclick="location.reload()">다시 돌아가기</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Trust Warning Box -->
+                <div class="trust-warning-box text-center mt-5 fade-up delay-1">
+                    <p class="warning-text strong text-lg pb-2">"과도한 빚, 고통의 시작입니다."</p>
+                    <div class="law-boxes">
+                        <div class="law-item">
+                            <i class="ph-fill ph-warning-octagon text-warning"></i>
+                            <p><strong>중개수수료를 요구하거나 받는 것은 불법입니다.</strong><br>대출 시 신용등급 또는 개인신용평점이 하락할 수 있습니다.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Professional Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-logo">
+                    <i class="ph-fill ph-buildings"></i>
+                    <strong>다솔대부중개</strong>
+                </div>
+                <div class="footer-links">
+                    <a href="#">이용약관</a>
+                    <a href="#"><strong>개인정보처리방침</strong></a>
+                    <a href="#">이메일무단수집거부</a>
+                </div>
+            </div>
+            
+            <div class="footer-divider"></div>
+            
+            <div class="footer-content">
+                <div class="company-details text-sm">
+                    <p><strong>상호명:</strong> 다솔대부중개 &nbsp;|&nbsp; <strong>대표자명:</strong> 김도준 &nbsp;|&nbsp; <strong>대부중개업등록번호:</strong> 2025-경기안양-0007-중개</p>
+                    <p><strong>등록 지자체:</strong> 경기도 안양시청 &nbsp;|&nbsp; <strong>사업장 소재지:</strong> 경기도 안양시 동안구 엘에스로 76, 국제유통단지 가동 239호 (호계동)</p>
+                    <p><strong>대표번호:</strong> 1866-1019 &nbsp;|&nbsp; <strong>대출금리:</strong> 연 20% 이내 (연체이자율: 연 20% 이내)</p>
+                    <p><strong>부대비용:</strong> 없음 &nbsp;|&nbsp; <strong>조기상환수수료율:</strong> 2.0% 이내 (3년 이내 부과, 상품별 차등 적용)</p>
+                </div>
+                
+                <div class="footer-cs">
+                    <p class="cs-title">고객센터 문의</p>
+                    <p class="cs-number">1866-1019</p>
+                    <p class="cs-hours">평일 09:00 - 18:00 (주말 및 공휴일 휴무)</p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>과도한 빚, 신용불량자가 되는 지름길입니다. 중개수수료를 요구하거나 받는 것은 불법입니다.</p>
+                <p class="copyright">COPYRIGHT © 다솔대부중개 ALL RIGHTS RESERVED.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Fixed Mobile CTA -->
+    <div class="mobile-cta-fixed d-none-desktop">
+        <a href="#consult-form" class="btn-half btn-dark smooth-scroll">내 한도 알아보기</a>
+        <a href="tel:1866-1019" class="btn-half btn-primary"><i class="ph-fill ph-phone-call"></i> 전화 상담</a>
+    </div>
+
+    <!-- Glide.js Script -->
+    <script src="https://cdn.jsdelivr.net/npm/@glidejs/glide"></script>
+    <script src="main.js"></script>
+</body>
+</html>
