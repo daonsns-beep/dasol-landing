@@ -129,8 +129,25 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('address-text').style.color = 'var(--text-main)';
         document.getElementById('address-text').style.fontWeight = '600';
         
-        // Trigger Analysis
-        startValuationAnalysis();
+        // Show detailed address input instead of starting analysis
+        const detailedGroup = document.getElementById('detailed-address-group');
+        if (detailedGroup) {
+            detailedGroup.style.display = 'block';
+            document.getElementById('detailed-address-input').focus();
+        }
+    }
+
+    // Attach listener to Start Simulation button
+    const startSimBtn = document.getElementById('start-simulation-btn');
+    if (startSimBtn) {
+        startSimBtn.addEventListener('click', () => {
+            const detailInput = document.getElementById('detailed-address-input').value.trim();
+            if (detailInput) {
+                const currentAddr = document.getElementById('address-text').innerText;
+                document.getElementById('address-text').innerText = currentAddr + ' ' + detailInput;
+            }
+            startValuationAnalysis();
+        });
     }
 
     function startValuationAnalysis() {
@@ -171,6 +188,15 @@ document.addEventListener('DOMContentLoaded', () => {
         // Stage 4: Finish and show result overlay (Lead Capture)
         setTimeout(() => {
             loadingOverlay.style.display = 'none';
+            
+            // Hide previous contents perfectly so the form neatly takes the space
+            document.getElementById('address-input-container').style.display = 'none';
+            document.querySelector('.mock-chart-container').style.display = 'none';
+            const footerText = document.getElementById('valuation-footer-text');
+            if (footerText) footerText.style.display = 'none';
+            
+            document.getElementById('valuation-title').innerText = '가치 평가 분석 결과';
+            
             resultOverlay.style.display = 'flex';
             resultOverlay.style.animation = 'fadeIn 0.4s ease-out forwards';
         }, 3600);
