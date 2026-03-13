@@ -163,6 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
         barGov.style.width = '0%';
         barAi.style.width = '0%';
         barLimit.style.width = '0%';
+        barLimit.parentElement.classList.remove('filled');
         
         // Animate loading text
         const loadingText = document.getElementById('loading-text');
@@ -183,6 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
             loadingText.innerText = '최대 가능 한도 계산 중...';
             barLimit.style.width = '90%';
+            barLimit.parentElement.classList.add('filled');
         }, 2500);
         
         // Stage 4: Finish and show result overlay (Lead Capture)
