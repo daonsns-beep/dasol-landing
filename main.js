@@ -280,4 +280,104 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     }
+
+    // 9. FAQ Accordion Toggle
+    const faqItems = document.querySelectorAll('.faq-item');
+    faqItems.forEach(item => {
+        const btn = item.querySelector('.faq-question');
+        if(btn) {
+            btn.addEventListener('click', () => {
+                const isActive = item.classList.contains('active');
+                
+                // Close all others
+                faqItems.forEach(otherItem => {
+                    otherItem.classList.remove('active');
+                });
+                
+                // Toggle current
+                if (!isActive) {
+                    item.classList.add('active');
+                }
+            });
+        }
+    });
+
+    // 10. Number Counter Animation for Trust Banner
+    const counters = document.querySelectorAll('.counter');
+    const speed = 100; // The lower the slower
+    
+    // Intersection Observer for counters
+    const counterObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const counter = entry.target;
+                const updateCount = () => {
+                    const target = +counter.getAttribute('data-target');
+                    const count = +(counter.innerText.replace(/,/g, ''));
+                    const inc = target / speed;
+                    
+                    if (count < target) {
+                        counter.innerText = Math.ceil(count + inc).toLocaleString();
+                        setTimeout(updateCount, 20);
+                    } else {
+                        counter.innerText = target.toLocaleString();
+                    }
+                };
+                updateCount();
+                observer.unobserve(counter);
+            }
+        });
+    }, { threshold: 0.5 });
+    
+    counters.forEach(counter => {
+        counterObserver.observe(counter);
+    });
+
+    // 11. Promotional Trust Modal Logic
+    const promoModal = document.getElementById('promo-modal');
+    const promoOverlay = document.getElementById('promo-overlay');
+    const btnPromoCloseBtn = document.getElementById('promo-close-btn');
+    const btnPromo24h = document.getElementById('promo-close-24h');
+    const btnPromoNow = document.getElementById('promo-close-now');
+
+    function showPromo() {
+        const hidePromoUntil = localStorage.getItem('hidePromoUntil');
+        if (hidePromoUntil) {
+            const now = new Date().getTime();
+            if (now < parseInt(hidePromoUntil)) {
+                return; // Suppress showing if within 24 hours
+            }
+        }
+        
+        if (promoModal && promoOverlay) {
+            promoOverlay.classList.add('show');
+            promoModal.classList.add('show');
+        }
+    }
+
+    function closePromo() {
+        if (promoModal && promoOverlay) {
+            promoModal.classList.remove('show');
+            promoOverlay.classList.remove('show');
+        }
+    }
+
+    if (promoModal) {
+        // Show after 2.5 seconds
+        setTimeout(showPromo, 2500);
+
+        // Close actions
+        if (btnPromoCloseBtn) btnPromoCloseBtn.addEventListener('click', closePromo);
+        if (btnPromoNow) btnPromoNow.addEventListener('click', closePromo);
+        if (promoOverlay) promoOverlay.addEventListener('click', closePromo);
+
+        if (btnPromo24h) {
+            btnPromo24h.addEventListener('click', () => {
+                // Set expiry to 24 hours from now
+                const expires = new Date().getTime() + 24 * 60 * 60 * 1000;
+                localStorage.setItem('hidePromoUntil', expires.toString());
+                closePromo();
+            });
+        }
+    }
 });
