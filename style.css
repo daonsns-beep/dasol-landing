@@ -173,12 +173,14 @@ h1, h2, h3, h4, h5, h6 { font-weight: 700; line-height: 1.35; letter-spacing: -0
 @media (min-width: 768px) { .solution-grid { grid-template-columns: repeat(3, 1fr); } }
 .solution-card {
     background: white; border: 1px solid var(--border-color); border-radius: 20px;
-    padding: 32px 24px; transition: var(--transition); box-shadow: var(--shadow-sm);
+    padding: 40px 32px; transition: var(--transition); box-shadow: var(--shadow-sm);
 }
 .solution-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); border-color: rgba(37, 99, 235, 0.3);}
 .card-icon { width: 56px; height: 56px; background: #eff6ff; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; color: var(--seconday-color); margin-bottom: 20px; }
-.solution-card h3 { font-size: 1.4rem; margin-bottom: 12px; color: var(--primary-color); }
-.solution-card p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 20px; min-height: 48px;}
+.card-icon-img { width: 140px; height: 140px; object-fit: contain; margin: 0 auto 24px auto; display: block; filter: drop-shadow(0 15px 25px rgba(0,0,0,0.08)); transition: var(--transition); }
+.solution-card:hover .card-icon-img { transform: translateY(-8px) scale(1.05); }
+.solution-card h3 { font-size: 1.5rem; margin-bottom: 16px; color: var(--primary-color); font-weight: 800;}
+.solution-card p { color: var(--text-muted); font-size: 1rem; margin-bottom: 20px; line-height: 1.6;}
 .bullet-list li { display: flex; gap: 8px; align-items: flex-start; margin-bottom: 8px; font-size: 0.9rem; font-weight: 500; }
 .bullet-list i { color: var(--accent-color); margin-top: 2px; }
 
