@@ -107,10 +107,20 @@ h1, h2, h3, h4, h5, h6 { font-weight: 700; line-height: 1.35; letter-spacing: -0
     position: relative; padding: 140px 0 80px; background-color: var(--bg-light);
     overflow: hidden; min-height: 90vh; display: flex; align-items: center;
 }
-.hero-bg-shapes { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none;}
-.shape { position: absolute; border-radius: 50%; filter: blur(60px); opacity: 0.4; }
-.shape-1 { width: 500px; height: 500px; background: #e0e7ff; top: -100px; right: -100px; }
-.shape-2 { width: 400px; height: 400px; background: #dbf4ff; bottom: -50px; left: -100px; }
+.hero-watermark-bg {
+    position: absolute; inset: 0; z-index: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; pointer-events: none;
+}
+.watermark-text {
+    position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%);
+    font-size: 38vw; font-weight: 900; color: #3b82f6; opacity: 0.03; line-height: 1; letter-spacing: -2vw; white-space: nowrap;
+}
+.hero-main-character {
+    position: absolute; left: -260px; bottom: -80px; height: 110%;
+    z-index: 5; pointer-events: none; filter: drop-shadow(10px 10px 20px rgba(0,0,0,0.15));
+}
+@media (max-width: 991px) {
+    .hero-main-character { display: none; }
+}
 
 .hero-container { position: relative; z-index: 1; display: grid; grid-template-columns: 1fr; gap: 60px; align-items: center; }
 @media (min-width: 992px) { .hero-container { grid-template-columns: 1.1fr 0.9fr; } }
@@ -319,8 +329,8 @@ h1, h2, h3, h4, h5, h6 { font-weight: 700; line-height: 1.35; letter-spacing: -0
 .sticky-bar-container {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 20px;
+    justify-content: flex-start;
+    gap: 40px;
 }
 .sticky-title {
     font-size: 1.05rem;
@@ -335,7 +345,7 @@ h1, h2, h3, h4, h5, h6 { font-weight: 700; line-height: 1.35; letter-spacing: -0
     align-items: center;
     gap: 12px;
     flex: 1;
-    justify-content: flex-end;
+    justify-content: flex-start;
 }
 .sticky-form-inline input, .sticky-form-inline select {
     padding: 12px 14px;

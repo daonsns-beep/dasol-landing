@@ -91,8 +91,11 @@
                     </div>
                 </div>
                 
-                <!-- Graphic / Calculator Preview -->
-                <div class="hero-visual fade-up delay-1">
+                <!-- Graphic / Calculator Preview & Hero Character -->
+                <div class="hero-visual fade-up delay-1" style="position: relative;">
+                    <!-- The new Hero Character (Overlapping between text and card) -->
+                    <img src="images/character_hero.png" alt="대출 전문가" class="hero-main-character">
+                    
                     <div class="valuation-card">
                         <div class="card-header">
                             <div class="pulse-dot"></div>
@@ -172,9 +175,8 @@
                 </div>
             </div>
             
-            <div class="hero-bg-shapes">
-                <div class="shape shape-1"></div>
-                <div class="shape shape-2"></div>
+            <div class="hero-watermark-bg">
+                <div class="watermark-text">다솔</div>
             </div>
         </section>
 
@@ -798,7 +800,7 @@
             <form id="sticky-loan-form" class="sticky-form-inline">
                 <input type="text" id="s-name" placeholder="이름" required>
                 <input type="tel" id="s-phone" placeholder="연락처 (숫자만)" required>
-                <select id="s-property" required>
+                <select id="s-property">
                     <option value="" disabled selected>담보종류</option>
                     <option value="아파트">아파트</option>
                     <option value="빌라/다세대">빌라/다세대</option>
