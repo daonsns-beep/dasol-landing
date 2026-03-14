@@ -68,6 +68,14 @@ ul { list-style: none; }
     .hero-pro { padding: 100px 0 60px; min-height: auto; }
     .section-title { font-size: 1.8rem; }
     .hero-title { font-size: 2.2rem; }
+    
+    /* Mobile Header Fixes */
+    .header-container { height: 60px; padding: 0 16px; }
+    .logo i { font-size: 1.6rem; }
+    .logo strong { font-size: 1.1rem; }
+    .logo span { display: none; } /* Hide subtext to save space */
+    .header-actions .btn { padding: 8px 14px; font-size: 0.9rem; } /* Shrink CTA button */
+    .header-actions .btn i { font-size: 1.1rem; }
 }
 
 h1, h2, h3, h4, h5, h6 { font-weight: 700; line-height: 1.35; letter-spacing: -0.02em; }
