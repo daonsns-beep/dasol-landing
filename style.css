@@ -320,7 +320,7 @@ h1, h2, h3, h4, h5, h6 { font-weight: 700; line-height: 1.35; letter-spacing: -0
     box-shadow: 0 -10px 30px rgba(0,0,0,0.06);
     z-index: 999;
     padding: 14px 0;
-    /* Removed transform so it's visible by default. .d-none-mobile handles display: flex on desktop */
+    display: block !important;
 }
 .sticky-bar-container {
     display: flex;
@@ -397,6 +397,7 @@ h1, h2, h3, h4, h5, h6 { font-weight: 700; line-height: 1.35; letter-spacing: -0
     .hero-cta { flex-direction: column; width: 100%; }
     .btn-lg { width: 100%; }
     body { padding-bottom: 60px; } /* Space for CTA */
+    .sticky-bottom-bar { display: none !important; }
 }
 
 /* Trust Banner */
