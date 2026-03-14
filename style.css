@@ -437,8 +437,8 @@ h1, h2, h3, h4, h5, h6 { font-weight: 700; line-height: 1.35; letter-spacing: -0
         padding: 8px 6px;
         font-size: 0.8rem;
     }
-    #s-name { flex: 1.2; }
-    #s-phone { flex: 2; }
+    #s-name { flex: 1.3; } /* Increased from 1.2 */
+    #s-phone { flex: 2.2; } /* Increased from 2 */
     #s-property { display: none; }
     .s-privacy-label {
         font-size: 0; /* Hide original text */
@@ -447,10 +447,13 @@ h1, h2, h3, h4, h5, h6 { font-weight: 700; line-height: 1.35; letter-spacing: -0
     .s-privacy-label span { font-size: 0; }
     .s-privacy-label span::after { content: "동의"; font-size: 0.75rem; letter-spacing: -0.05em; }
     .s-submit-btn {
-        flex: 1.5;
+        flex: 1.2; /* Decreased from 1.5 */
         padding: 8px 0;
         font-size: 0.85rem;
         letter-spacing: -0.05em;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
     }
     .s-submit-btn i { display: none; }
     
