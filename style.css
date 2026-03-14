@@ -376,6 +376,8 @@ h1, h2, h3, h4, h5, h6 { font-weight: 700; line-height: 1.35; letter-spacing: -0
     cursor: pointer;
     width: 16px;
     height: 16px;
+    min-width: 16px !important; /* Override sticky-form-inline input min-width */
+    padding: 0 !important; /* Override sticky-form-inline input padding */
     accent-color: var(--seconday-color);
 }
 .s-submit-btn {
