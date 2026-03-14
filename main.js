@@ -244,17 +244,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 8. Sticky Bottom Bar visibility & submission
+    // 8. Sticky Bottom Bar submission
     const stickyBar = document.getElementById('sticky-bottom-bar');
     if (stickyBar) {
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 450) {
-                stickyBar.classList.add('visible');
-            } else {
-                stickyBar.classList.remove('visible');
-            }
-        });
-
         const stickyForm = document.getElementById('sticky-loan-form');
         if (stickyForm) {
             stickyForm.addEventListener('submit', (e) => {
