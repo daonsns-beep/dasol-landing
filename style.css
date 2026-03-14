@@ -373,7 +373,7 @@ h1, h2, h3, h4, h5, h6 { font-weight: 700; line-height: 1.35; letter-spacing: -0
 }
 .s-privacy-label input {
     margin: 0;
-    margin-right: -2px; /* Pull the text closer */
+    margin-right: -6px; /* Pull the text much closer */
     cursor: pointer;
     width: 16px;
     height: 16px;
