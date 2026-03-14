@@ -328,7 +328,7 @@ h1, h2, h3, h4, h5, h6 { font-weight: 700; line-height: 1.35; letter-spacing: -0
     justify-content: flex-start;
     gap: 24px;
     max-width: 1600px !important;
-    margin: 0 0 0 115px !important; /* Move about 2cm further to the right */
+    margin: 0 0 0 190px !important; /* Move another 2cm further to the right */
     padding-right: 360px; /* Keep elements away from the right popup */
 }
 .sticky-title {
