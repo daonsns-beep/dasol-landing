@@ -513,3 +513,47 @@ h1, h2, h3, h4, h5, h6 { font-weight: 700; line-height: 1.35; letter-spacing: -0
 .btn-promo-left:hover, .btn-promo-right:hover { background: #f9fafb; color: var(--primary-color); }
 .btn-promo-right { font-weight: 600; color: var(--primary-color); }
 .promo-divider { width: 1px; background: var(--border-color); margin: 12px 0; }
+
+/* Privacy Policy Modal */
+.privacy-modal {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
+    z-index: 3000; display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s ease; padding: 20px;
+}
+.privacy-modal.show { opacity: 1; pointer-events: auto; }
+.privacy-modal-content {
+    background: white; border-radius: 20px; width: 100%; max-width: 500px;
+    max-height: 90vh; display: flex; flex-direction: column; overflow: hidden;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    transform: translateY(20px); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.privacy-modal.show .privacy-modal-content { transform: translateY(0); }
+.privacy-modal-header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 24px 24px 16px; border-bottom: 1px solid var(--border-color);
+}
+.privacy-modal-header h3 { font-size: 1.25rem; color: var(--primary-color); margin: 0; }
+.privacy-close-btn {
+    background: none; border: none; font-size: 1.5rem; color: var(--text-muted);
+    cursor: pointer; display: flex; align-items: center; justify-content: center; transition: var(--transition);
+}
+.privacy-close-btn:hover { color: var(--danger); transform: scale(1.1); }
+.privacy-modal-body {
+    padding: 24px; overflow-y: auto; flex-grow: 1;
+}
+.privacy-intro {
+    font-size: 0.95rem; color: var(--text-main); margin-bottom: 20px; font-weight: 500; line-height: 1.5;
+}
+.privacy-clause {
+    margin-bottom: 24px;
+}
+.privacy-clause:last-child { margin-bottom: 0; }
+.privacy-clause strong {
+    display: block; font-size: 0.95rem; color: var(--primary-color); margin-bottom: 8px; font-weight: 700;
+}
+.privacy-clause p {
+    font-size: 0.85rem; color: var(--text-muted); margin: 0; line-height: 1.6; word-break: keep-all;
+}
+.privacy-modal-footer {
+    padding: 16px 24px 24px; border-top: 1px solid var(--border-color); background: #f9fafb;
+}

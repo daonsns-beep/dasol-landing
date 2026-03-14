@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    <link rel="stylesheet" href="style.css?v=10">
+    <link rel="stylesheet" href="style.css?v=11">
     <!-- Glide.js for Carousel -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@glidejs/glide/dist/css/glide.core.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@glidejs/glide/dist/css/glide.theme.min.css">
@@ -666,7 +666,7 @@
                                 <label class="checkbox-container">
                                     <input type="checkbox" id="privacy_agree" required>
                                     <span class="checkmark"></span>
-                                    <span class="term-text">[필수] 개인정보 수집 및 이용 동의 <a href="#" class="view-terms" onclick="event.preventDefault(); alert('개인정보처리방침 팝업 오픈');">내용보기</a></span>
+                                    <span class="term-text">[필수] 개인정보 수집 및 이용 동의 <a href="#" class="view-terms" onclick="event.preventDefault(); document.getElementById('privacy-modal').classList.add('show');">내용보기</a></span>
                                 </label>
                             </div>
 
@@ -710,7 +710,7 @@
                 </div>
                 <div class="footer-links">
                     <a href="#">이용약관</a>
-                    <a href="#"><strong>개인정보처리방침</strong></a>
+                    <a href="#" onclick="event.preventDefault(); document.getElementById('privacy-modal').classList.add('show');"><strong>개인정보처리방침</strong></a>
                     <a href="#">이메일무단수집거부</a>
                 </div>
             </div>
@@ -785,6 +785,42 @@
                 <button class="btn-promo-left" id="promo-close-24h">24시간 동안 닫기</button>
                 <div class="promo-divider"></div>
                 <button class="btn-promo-right" id="promo-close-now">닫기</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Privacy Policy Modal (Legal Compliance) -->
+    <div class="privacy-modal" id="privacy-modal">
+        <div class="privacy-modal-content fade-up visible">
+            <div class="privacy-modal-header">
+                <h3>개인정보 수집 및 이용 동의</h3>
+                <button class="privacy-close-btn" onclick="document.getElementById('privacy-modal').classList.remove('show');"><i class="ph ph-x"></i></button>
+            </div>
+            <div class="privacy-modal-body">
+                <p class="privacy-intro">원활한 대출 상담 서비스 제공을 위해 아래와 같이 개인정보를 수집 및 이용합니다.</p>
+                <div class="privacy-clause">
+                    <strong>1. 수집하는 개인정보 항목</strong>
+                    <p>(필수) 성명, 연락처(휴대전화번호)<br>
+                    (선택) 담보 부동산 종류, 희망 대출금액, 부동산 소재지</p>
+                </div>
+                <div class="privacy-clause">
+                    <strong>2. 수집 및 이용 목적</strong>
+                    <p>- 대출 한도 조회 및 금리 안내<br>
+                    - 맞춤형 대출 상품 상담 및 관련 안내 (전화, 문자 메시지, 알림톡 등)</p>
+                </div>
+                <div class="privacy-clause">
+                    <strong>3. 보유 및 이용 기간</strong>
+                    <p><strong>- 원칙적으로 개인정보의 수집 및 이용 목적 달성 시 지체 없이 파기합니다.</strong><br>
+                    - 단, 관련 법령(소비자보호에 관한 법률 등)에 의하여 보존할 필요가 있는 경우 해당 법령에서 정한 기간 동안 보관합니다. (예: 소비자의 불만 또는 분쟁처리에 관한 기록 - 3년)<br>
+                    - 고객의 동의 철회 요청 시 즉각 파기합니다.</p>
+                </div>
+                <div class="privacy-clause">
+                    <strong>4. 동의를 거부할 권리 및 불이익</strong>
+                    <p>귀하는 위 개인정보 수집 및 이용에 대한 동의를 거부할 권리가 있습니다. 단, 필수항목 동의 거부 시 원활한 대출 한도 조회 및 상담 서비스 제공이 제한됩니다.</p>
+                </div>
+            </div>
+            <div class="privacy-modal-footer">
+                <button type="button" class="btn btn-primary" style="width: 100%; border-radius: 12px; font-weight: 600;" onclick="document.getElementById('privacy_agree').checked = true; document.getElementById('s-privacy').checked = true; document.getElementById('privacy-modal').classList.remove('show');">동의하고 닫기</button>
             </div>
         </div>
     </div>
