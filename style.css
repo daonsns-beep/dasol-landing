@@ -63,6 +63,13 @@ ul { list-style: none; }
     .d-none-desktop { display: none !important; }
 }
 
+@media (max-width: 767px) {
+    .section { padding: 60px 0; }
+    .hero-pro { padding: 100px 0 60px; min-height: auto; }
+    .section-title { font-size: 1.8rem; }
+    .hero-title { font-size: 2.2rem; }
+}
+
 h1, h2, h3, h4, h5, h6 { font-weight: 700; line-height: 1.35; letter-spacing: -0.02em; }
 
 /* Animations */
@@ -398,15 +405,17 @@ h1, h2, h3, h4, h5, h6 { font-weight: 700; line-height: 1.35; letter-spacing: -0
     .stat-item { flex-direction: row; gap: 12px; align-items: center; width: 100%; justify-content: space-between;}
     .hero-cta { flex-direction: column; width: 100%; }
     .btn-lg { width: 100%; }
-    body { padding-bottom: 200px; } /* More space for the taller vertical form on mobile */
-    .mobile-cta-fixed { display: none !important; } /* Hide the dual button CTA if we use the full form */
     
-    .sticky-bar-container { flex-direction: column; align-items: stretch; padding: 16px; margin: 0 !important; gap: 12px; height: auto; padding-right: 16px;}
-    .sticky-title { text-align: center; font-size: 1rem; white-space: normal; padding-bottom: 4px; border-bottom: 1px dashed var(--border-color); }
-    .sticky-form-inline { flex-wrap: wrap; justify-content: space-between; gap: 8px; }
-    .sticky-form-inline input, .sticky-form-inline select { width: 48%; padding: 10px; font-size: 0.9rem; min-width: 0; }
-    .s-privacy-label { width: 100%; justify-content: center; margin-bottom: 4px; font-size: 0.85rem; }
-    .s-submit-btn { width: 100%; padding: 12px; font-size: 1rem; border-radius: 8px; }
+    body { padding-bottom: 70px; } /* Adjust padding for the new 2-button CTA instead of the tall form */
+    
+    /* Hide the complex desktop sticky form completely on mobile */
+    .sticky-bottom-bar { display: none !important; }
+    
+    /* Show the clean 2-button CTA instead */
+    .mobile-cta-fixed { display: flex !important; } 
+    
+    .trust-text { font-size: 1.1rem; } 
+    .trust-text strong { font-size: 1.4rem; }
 }
 
 /* Trust Banner */
