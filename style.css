@@ -320,11 +320,7 @@ h1, h2, h3, h4, h5, h6 { font-weight: 700; line-height: 1.35; letter-spacing: -0
     box-shadow: 0 -10px 30px rgba(0,0,0,0.06);
     z-index: 999;
     padding: 14px 0;
-    transform: translateY(120%);
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.sticky-bottom-bar.visible {
-    transform: translateY(0);
+    /* Removed transform so it's visible by default. .d-none-mobile handles display: flex on desktop */
 }
 .sticky-bar-container {
     display: flex;
