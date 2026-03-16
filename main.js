@@ -62,6 +62,32 @@ async function sendWebhookNotification(data) {
     }
 }
 
+// Custom Toast Modal (replaces browser alert)
+const TOAST_ICONS = {
+    success: 'ph-check-circle',
+    error: 'ph-x-circle',
+    warning: 'ph-warning'
+};
+function showToast(type, title, message) {
+    const overlay = document.getElementById('toast-overlay');
+    const iconWrap = document.getElementById('toast-icon-wrap');
+    const icon = document.getElementById('toast-icon');
+    const titleEl = document.getElementById('toast-title');
+    const msgEl = document.getElementById('toast-message');
+    const btn = document.getElementById('toast-close-btn');
+
+    iconWrap.className = 'toast-icon-wrap ' + type;
+    icon.className = 'ph-bold ' + TOAST_ICONS[type];
+    titleEl.textContent = title;
+    msgEl.textContent = message;
+    btn.className = 'toast-btn ' + type;
+    overlay.classList.add('show');
+
+    const close = () => overlay.classList.remove('show');
+    btn.onclick = close;
+    overlay.onclick = (e) => { if (e.target === overlay) close(); };
+}
+
 // Global phone formatter: 010-1234-1234 format
 function formatPhone(input) {
     // Get cursor position before formatting
@@ -185,7 +211,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             const privacyAgree = document.getElementById('privacy_agree');
             if(!privacyAgree.checked) {
-                alert('개인정보 수집 및 이용에 동의해주세요.');
+                showToast('warning', '동의 필요', '개인정보 수집 및 이용에 동의해주세요.');
                 return;
             }
 
@@ -239,7 +265,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 successMsg.style.animation = 'fadeIn 0.5s ease-out forwards';
             } catch (err) {
                 console.error('Lead 등록 오류:', err);
-                alert('신청 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+                showToast('error', '오류 발생', '신청 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
                 submitBtn.style.pointerEvents = 'auto';
                 submitBtn.innerHTML = '<span>예상 한도/금리 확인하기</span> <i class="ph-bold ph-arrow-right"></i>';
             }
@@ -349,11 +375,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const privacyCheck = document.getElementById('mini-privacy').checked;
             
             if (!nameInput || !phoneInput || phoneInput === '010-') {
-                alert('이름과 연락처를 모두 입력해주세요.');
+                showToast('warning', '입력 필요', '이름과 연락처를 모두 입력해주세요.');
                 return;
             }
             if (!privacyCheck) {
-                alert('개인정보 수집 및 이용에 동의해주세요.');
+                showToast('warning', '동의 필요', '개인정보 수집 및 이용에 동의해주세요.');
                 return;
             }
             
@@ -401,7 +427,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 successState.style.animation = 'fadeIn 0.5s ease-out forwards';
             } catch (err) {
                 console.error('Lead 등록 오류:', err);
-                alert('신청 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+                showToast('error', '오류 발생', '신청 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
                 miniSubmitBtn.disabled = false;
                 miniSubmitBtn.innerHTML = '결과 톡/문자로 받기';
             }
@@ -417,7 +443,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 e.preventDefault();
                 const privacyCheck = document.getElementById('s-privacy').checked;
                 if (!privacyCheck) {
-                    alert('개인정보 수집 및 이용에 동의해주세요.');
+                    showToast('warning', '동의 필요', '개인정보 수집 및 이용에 동의해주세요.');
                     return;
                 }
                 
@@ -428,7 +454,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const sProperty = document.getElementById('s-property').value || '';
 
                 if (!sName || !sPhone || sPhone === '010') {
-                    alert('이름과 연락처를 입력해주세요.');
+                    showToast('warning', '입력 필요', '이름과 연락처를 입력해주세요.');
                     return;
                 }
                 
@@ -462,14 +488,14 @@ document.addEventListener('DOMContentLoaded', () => {
                         created_at: new Date().toLocaleString('sv-SE', { timeZone: 'Asia/Seoul' }).replace(' ', 'T') + '+09:00'
                     });
 
-                    alert('신청이 완료되었습니다. 전문 상담원이 곧 연락드리겠습니다.');
+                    showToast('success', '신청 완료', '전문 상담원이 곧 연락드리겠습니다.');
                     btn.innerHTML = originalHtml;
                     btn.disabled = false;
                     stickyForm.reset();
                     document.getElementById('s-phone').value = '010-';
                 } catch (err) {
                     console.error('Lead 등록 오류:', err);
-                    alert('신청 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+                    showToast('error', '오류 발생', '신청 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
                     btn.innerHTML = originalHtml;
                     btn.disabled = false;
                 }

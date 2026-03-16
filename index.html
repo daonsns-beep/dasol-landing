@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    <link rel="stylesheet" href="style.css?v=11">
+    <link rel="stylesheet" href="style.css?v=12">
     <!-- Glide.js for Carousel -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@glidejs/glide/dist/css/glide.core.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@glidejs/glide/dist/css/glide.theme.min.css">
@@ -825,9 +825,20 @@
         </div>
     </div>
 
+    <!-- Custom Toast Modal -->
+    <div id="toast-overlay" class="toast-overlay">
+        <div class="toast-modal" id="toast-modal">
+            <div class="toast-icon-wrap" id="toast-icon-wrap">
+                <i class="ph-bold ph-check-circle" id="toast-icon"></i>
+            </div>
+            <h3 class="toast-title" id="toast-title">신청 완료</h3>
+            <p class="toast-message" id="toast-message">전문 상담원이 곧 연락드리겠습니다.</p>
+            <button type="button" class="toast-btn" id="toast-close-btn">확인</button>
+        </div>
+    </div>
+
     <!-- Glide.js Script -->
     <script src="https://cdn.jsdelivr.net/npm/@glidejs/glide"></script>
-    <script src="main.js?v=2"></script>
+    <script src="main.js?v=3"></script>
 </body>
 </html>
-```
