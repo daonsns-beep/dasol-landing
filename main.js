@@ -1,5 +1,105 @@
 // main.js - Professional Redesign Interactive Elements
 
+// Supabase Configuration
+const SUPABASE_URL = 'https://afeocdpxhpmmspovabru.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFmZW9jZHB4aHBtbXNwb3ZhYnJ1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE1MzAxNTcsImV4cCI6MjA4NzEwNjE1N30.Q6uq1v_xp1001TOdSSPhNbdggC2RGUDQdN5HWwvfMLY';
+
+// Helper: Detect device type
+function getDeviceType() {
+    const width = window.innerWidth;
+    if (width <= 768) return 'mobile';
+    if (width <= 1024) return 'tablet';
+    return 'desktop';
+}
+
+// Helper: Get KST ISO string
+function getKSTISOString() {
+    const now = new Date();
+    const kstOffset = 9 * 60 * 60 * 1000;
+    const kst = new Date(now.getTime() + kstOffset);
+    return kst.toISOString().replace('Z', '');
+}
+
+// Helper: Strip hyphens from phone for DB storage
+function stripPhone(phone) {
+    return phone.replace(/-/g, '');
+}
+
+// Submit lead to Supabase via REST API
+async function submitLeadToSupabase(leadData) {
+    const response = await fetch(`${SUPABASE_URL}/rest/v1/lead`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'apikey': SUPABASE_ANON_KEY,
+            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+            'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify(leadData)
+    });
+    
+    if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Supabase 오류: ${response.status} - ${errorText}`);
+    }
+    return true;
+}
+
+// n8n Webhook URL
+const N8N_WEBHOOK_URL = 'https://daon1019.com/webhook/addscapcokr';
+
+// Send lead notification to n8n webhook (for Telegram alert)
+async function sendWebhookNotification(data) {
+    try {
+        await fetch(N8N_WEBHOOK_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+    } catch (err) {
+        // 웹훅 실패해도 Supabase INSERT는 이미 완료되었으므로 무시
+        console.warn('n8n 웹훅 전송 실패 (무시):', err);
+    }
+}
+
+// Global phone formatter: 010-1234-1234 format
+function formatPhone(input) {
+    // Get cursor position before formatting
+    const cursorPos = input.selectionStart;
+    const prevLen = input.value.length;
+    
+    // Strip non-digits
+    let digits = input.value.replace(/[^0-9]/g, '');
+    
+    // Ensure starts with 010
+    if (!digits.startsWith('010')) {
+        digits = '010';
+    }
+    
+    // Cap at 11 digits (010 + 8)
+    if (digits.length > 11) {
+        digits = digits.substring(0, 11);
+    }
+    
+    // Format: 010-XXXX-XXXX
+    let formatted = '';
+    if (digits.length <= 3) {
+        formatted = digits + '-';
+    } else if (digits.length <= 7) {
+        formatted = digits.substring(0, 3) + '-' + digits.substring(3);
+    } else {
+        formatted = digits.substring(0, 3) + '-' + digits.substring(3, 7) + '-' + digits.substring(7);
+    }
+    
+    input.value = formatted;
+    
+    // Adjust cursor position
+    const newLen = formatted.length;
+    const diff = newLen - prevLen;
+    const newCursorPos = Math.max(4, cursorPos + diff); // Never before '010-'
+    input.setSelectionRange(newCursorPos, newCursorPos);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     // 1. Header Scroll Effect
     const header = document.getElementById('header');
@@ -80,34 +180,69 @@ document.addEventListener('DOMContentLoaded', () => {
     const successMsg = document.getElementById('form-success-msg');
 
     if (loanForm) {
-        loanForm.addEventListener('submit', (e) => {
+        loanForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            // Basic validation
             const privacyAgree = document.getElementById('privacy_agree');
             if(!privacyAgree.checked) {
                 alert('개인정보 수집 및 이용에 동의해주세요.');
                 return;
             }
 
-            // In a real scenario, you would send FormData via fetch/axios here.
-            // const formData = new FormData(loanForm);
-            // fetch('/api/submit', { method: 'POST', body: formData }) ...
-
-            // Simulate loading and success state
             const submitBtn = loanForm.querySelector('.btn-submit');
-            const originalBtnHtml = submitBtn.innerHTML;
-            
             submitBtn.style.pointerEvents = 'none';
             submitBtn.innerHTML = '<i class="ph ph-spinner ph-spin"></i> <span>제출 중...</span>';
-            
-            setTimeout(() => {
+
+            // Gather form data
+            const name = document.getElementById('name').value.trim();
+            const phone = stripPhone(document.getElementById('phone').value.trim());
+            const propertyType = document.getElementById('property_type').value || '';
+            const loanAmount = document.getElementById('loan_amount').value.trim();
+            const purposeEl = document.querySelector('input[name="purpose"]:checked');
+            const purpose = purposeEl ? purposeEl.value : '';
+
+            // Build memo
+            const memoParts = [];
+            if (propertyType) memoParts.push(`담보: ${propertyType}`);
+            if (loanAmount) memoParts.push(`희망금액: ${loanAmount}`);
+            if (purpose) memoParts.push(`용도: ${purpose}`);
+
+            try {
+                await submitLeadToSupabase({
+                    name,
+                    phone,
+                    source: '다솔랜딩',
+                    status: '신규',
+                    home: propertyType || null,
+                    memo: memoParts.join(' / ') || null,
+                    form_variant: 'main_form',
+                    device_type: getDeviceType(),
+                    landing_url: window.location.href,
+                    referrer: document.referrer || null,
+                    created_at: getKSTISOString()
+                });
+
+                // n8n 웹훅으로 텔레그램 알림 전송
+                const phoneFormatted = document.getElementById('phone').value.trim();
+                sendWebhookNotification({
+                    name,
+                    phone: phoneFormatted,
+                    source: '다솔(병수랜딩)',
+                    status: 'New',
+                    inquiry_form: memoParts.join(' / ') || '',
+                    sort: propertyType || '',
+                    created_at: new Date().toLocaleString('sv-SE', { timeZone: 'Asia/Seoul' }).replace(' ', 'T') + '+09:00'
+                });
+
                 loanForm.style.display = 'none';
                 successMsg.style.display = 'block';
-                
-                // Add success animation
                 successMsg.style.animation = 'fadeIn 0.5s ease-out forwards';
-            }, 1500);
+            } catch (err) {
+                console.error('Lead 등록 오류:', err);
+                alert('신청 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+                submitBtn.style.pointerEvents = 'auto';
+                submitBtn.innerHTML = '<span>예상 한도/금리 확인하기</span> <i class="ph-bold ph-arrow-right"></i>';
+            }
         });
     }
 
@@ -208,12 +343,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // 7. Handle Mini Form Submission
     const miniSubmitBtn = document.getElementById('mini-submit-btn');
     if (miniSubmitBtn) {
-        miniSubmitBtn.addEventListener('click', () => {
+        miniSubmitBtn.addEventListener('click', async () => {
             const nameInput = document.getElementById('mini-name').value.trim();
             const phoneInput = document.getElementById('mini-phone').value.trim();
             const privacyCheck = document.getElementById('mini-privacy').checked;
             
-            if (!nameInput || !phoneInput) {
+            if (!nameInput || !phoneInput || phoneInput === '010-') {
                 alert('이름과 연락처를 모두 입력해주세요.');
                 return;
             }
@@ -222,15 +357,40 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             
-            // Simulate API request
-            const originalText = miniSubmitBtn.innerText;
             miniSubmitBtn.disabled = true;
             miniSubmitBtn.innerHTML = '<i class="ph ph-spinner ph-spin"></i> 전송 중...';
-            
-            setTimeout(() => {
-                // Hide form, show success state
+
+            // Get address from simulation if available
+            const addressEl = document.getElementById('address-text');
+            const address = addressEl ? addressEl.innerText : '';
+            const isDefaultAddr = address === '주소 또는 아파트명 검색하기';
+
+            try {
+                await submitLeadToSupabase({
+                    name: nameInput,
+                    phone: stripPhone(phoneInput),
+                    source: '다솔랜딩',
+                    status: '신규',
+                    memo: !isDefaultAddr && address ? `시뮬레이션 주소: ${address}` : null,
+                    form_variant: 'hero_mini',
+                    device_type: getDeviceType(),
+                    landing_url: window.location.href,
+                    referrer: document.referrer || null,
+                    created_at: getKSTISOString()
+                });
+
+                // n8n 웹훅으로 텔레그램 알림 전송
+                sendWebhookNotification({
+                    name: nameInput,
+                    phone: phoneInput,
+                    source: '다솔(병수랜딩)',
+                    status: 'New',
+                    inquiry_form: !isDefaultAddr && address ? `시뮬 주소: ${address}` : '',
+                    sort: '시뮬레이션',
+                    created_at: new Date().toLocaleString('sv-SE', { timeZone: 'Asia/Seoul' }).replace(' ', 'T') + '+09:00'
+                });
+
                 document.getElementById('mini-form-container').style.display = 'none';
-                
                 const title = document.querySelector('#valuation-result-overlay h4');
                 const p = document.querySelector('#valuation-result-overlay p:first-of-type');
                 if(title) title.style.display = 'none';
@@ -239,8 +399,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 const successState = document.getElementById('mini-success-state');
                 successState.style.display = 'flex';
                 successState.style.animation = 'fadeIn 0.5s ease-out forwards';
-                
-            }, 1200);
+            } catch (err) {
+                console.error('Lead 등록 오류:', err);
+                alert('신청 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+                miniSubmitBtn.disabled = false;
+                miniSubmitBtn.innerHTML = '결과 톡/문자로 받기';
+            }
         });
     }
 
@@ -249,7 +413,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (stickyBar) {
         const stickyForm = document.getElementById('sticky-loan-form');
         if (stickyForm) {
-            stickyForm.addEventListener('submit', (e) => {
+            stickyForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 const privacyCheck = document.getElementById('s-privacy').checked;
                 if (!privacyCheck) {
@@ -259,16 +423,56 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 const btn = stickyForm.querySelector('.s-submit-btn');
                 const originalHtml = btn.innerHTML;
+                const sName = document.getElementById('s-name').value.trim();
+                const sPhone = stripPhone(document.getElementById('s-phone').value.trim());
+                const sProperty = document.getElementById('s-property').value || '';
+
+                if (!sName || !sPhone || sPhone === '010') {
+                    alert('이름과 연락처를 입력해주세요.');
+                    return;
+                }
                 
                 btn.disabled = true;
                 btn.innerHTML = '<i class="ph ph-spinner ph-spin"></i> 접수 중...';
                 
-                setTimeout(() => {
+                try {
+                    await submitLeadToSupabase({
+                        name: sName,
+                        phone: sPhone,
+                        source: '다솔랜딩',
+                        status: '신규',
+                        home: sProperty || null,
+                        memo: sProperty ? `담보: ${sProperty}` : null,
+                        form_variant: 'sticky_bar',
+                        device_type: getDeviceType(),
+                        landing_url: window.location.href,
+                        referrer: document.referrer || null,
+                        created_at: getKSTISOString()
+                    });
+
+                    // n8n 웹훅으로 텔레그램 알림 전송
+                    const sPhoneFormatted = document.getElementById('s-phone').value.trim();
+                    sendWebhookNotification({
+                        name: sName,
+                        phone: sPhoneFormatted,
+                        source: '다솔(병수랜딩)',
+                        status: 'New',
+                        inquiry_form: sProperty ? `담보: ${sProperty}` : '',
+                        sort: sProperty || '',
+                        created_at: new Date().toLocaleString('sv-SE', { timeZone: 'Asia/Seoul' }).replace(' ', 'T') + '+09:00'
+                    });
+
                     alert('신청이 완료되었습니다. 전문 상담원이 곧 연락드리겠습니다.');
                     btn.innerHTML = originalHtml;
                     btn.disabled = false;
                     stickyForm.reset();
-                }, 1200);
+                    document.getElementById('s-phone').value = '010-';
+                } catch (err) {
+                    console.error('Lead 등록 오류:', err);
+                    alert('신청 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+                    btn.innerHTML = originalHtml;
+                    btn.disabled = false;
+                }
             });
         }
     }
